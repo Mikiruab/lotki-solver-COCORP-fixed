@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8" />
-  <title>Lotki - Solver COCORP</title>
+  <title>Lotki — Solver (logika 1 + tarcza 2)</title>
   <link href="https://fonts.googleapis.com/css2?family=Pricedown&display=swap" rel="stylesheet" />
   <!-- Original by Marichulanka edited by Klecha -->
   <!-- this file was made by klecha -->
@@ -196,12 +196,24 @@ function buildDartboard() {
 
 function cycleColor(el){
   let c=el.dataset.color;
+
+  // none → blue
   if(c==="none"){
     el.dataset.color="blue";
     el.setAttribute("fill","blue");
     return;
   }
+
   let idx=colors.indexOf(c);
+
+  // jeśli orange → wracamy do none
+  if(c==="orange"){
+    el.dataset.color="none";
+    el.setAttribute("fill",el.dataset.baseColor);
+    return;
+  }
+
+  // normalny cykl
   const next=colors[(idx+1)%colors.length];
   el.dataset.color=next;
   el.setAttribute("fill",next);
@@ -277,9 +289,8 @@ function compute(){
       let v=0;
       for(let i=0;i<order.length;i++){
         let idx=order[i];
-        let op=map[cols[idx]];
         if(cols[idx]==="none") continue;
-        v=apply(v,op,vals[idx]);
+        v=apply(v,map[cols[idx]],vals[idx]);
         if(v===null || !Number.isInteger(v)) continue outer;
       }
       valid={map,dir};
